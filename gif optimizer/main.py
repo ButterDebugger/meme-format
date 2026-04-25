@@ -1,4 +1,4 @@
-import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -13,7 +13,7 @@ frames_path = str(cwd / "frames")
 
 if __name__ == "__main__":
     # Ask user for file paths
-    target_gif = pick_file(str(cwd), [".gif"], "Gif to optimize")
+    target_gif = str(pick_file(str(cwd), [".gif"], "Gif to optimize"))
 
     # Ask user for output options
     print_header(2, "Output options")
@@ -25,4 +25,16 @@ if __name__ == "__main__":
 
     # Optimize the gif
     print_header(2, "Optimizing the gif")
-    os.system(f"ffmpeg -y -i \"{target_gif}\" -filter_complex \"scale={new_width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors={max_colors}[p];[s1][p]paletteuse=dither=bayer\" \"{output_gif}\"")
+
+    # Build the command
+    filter_complex = f"scale={new_width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors={max_colors}[p];[s1][p]paletteuse=dither=bayer"
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i", target_gif,
+        "-filter_complex", filter_complex,
+        output_gif
+    ]
+
+    # Execute the command
+    subprocess.run(command, check=True)
