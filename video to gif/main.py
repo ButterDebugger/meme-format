@@ -1,4 +1,4 @@
-import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -11,7 +11,7 @@ from utils.text import print_header
 
 if __name__ == "__main__":
     # Ask user for target video
-    target_video = pick_file(str(cwd), [".mp4", ".mov"], "Target video")
+    target_video = str(pick_file(str(cwd), [".mp4", ".mov"], "Target video"))
 
     # Ask user for output options
     print_header(2, "Output options")
@@ -23,4 +23,16 @@ if __name__ == "__main__":
 
     # Convert to gif
     print_header(2, "Converting to gif")
-    os.system(f"ffmpeg -i \"{target_video}\" -y -r {frame_rate} -filter_complex \"[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse=dither=none\" \"{output_gif}\"")
+
+    # Build the command
+    filter_complex = f"[0:v] fps={frame_rate},split [a][b];[a] palettegen=stats_mode=single [p];[b][p] paletteuse=new=1"
+    command = [
+        "ffmpeg",
+        "-i", target_video,
+        "-y",
+        "-filter_complex", filter_complex,
+        output_gif
+    ]
+
+    # Execute the command
+    subprocess.run(command, check=True)
