@@ -12,7 +12,7 @@ from utils.text import print_header
 # Program entry point
 if __name__ == "__main__":
     # Ask for the input mp4
-    media_file = pick_file(str(cwd), [".mp4"])
+    media_file = pick_file(str(cwd), [".mp4", ".mov"])
 
     # Ask for the start time and duration
     print_header(2, "Clip information")

@@ -11,7 +11,7 @@ from utils.text import print_header
 
 if __name__ == "__main__":
     # Ask user for target video
-    target_video = pick_file(str(cwd), [".mp4"], "Target video")
+    target_video = pick_file(str(cwd), [".mp4", ".mov"], "Target video")
 
     # Ask user for output options
     print_header(2, "Output options")
