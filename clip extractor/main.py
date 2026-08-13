@@ -1,4 +1,4 @@
-import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -23,6 +23,10 @@ if __name__ == "__main__":
     # Extract clip
     print_header(2, "Extracting clip")
     if duration == "":
-        os.system(f"ffmpeg -ss {start_time} -i \"{media_file}\" -c:a copy \"{output_file}.mp4\"")
+        subprocess.run([
+            "ffmpeg", "-ss", start_time, "-i", media_file, "-c:a", "copy", f"{output_file}.mp4"
+        ])
     else:
-        os.system(f"ffmpeg -ss {start_time} -i \"{media_file}\" -t {duration} -c:a copy \"{output_file}.mp4\"")
+        subprocess.run([
+            "ffmpeg", "-ss", start_time, "-i", media_file, "-t", duration, "-c:a", "copy", f"{output_file}.mp4"
+        ])
