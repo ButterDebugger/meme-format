@@ -4,8 +4,8 @@ A collection of scripts that allow you to create GIFs locally on your computer.
 
 ## Requirements
 
-- [ffmpeg](https://ffmpeg.org/download.html)
-- [uv](https://docs.astral.sh/uv/)
+- [FFmpeg](https://ffmpeg.org/download.html)
+- [UV](https://docs.astral.sh/uv/)
 - Python 3.12+
 
 ## Getting started
