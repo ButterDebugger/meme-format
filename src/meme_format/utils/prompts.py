@@ -1,15 +1,19 @@
-from utils.text import dim_text, print_header
+import sys
+from pathlib import Path
 
-def pick_file(path: str, extensions: list[str], header: str = "Pick a file"):
+from meme_format.utils.paths import INPUTS_DIR
+from meme_format.utils.text import dim_text, print_header
+
+
+def pick_input_file(extensions: list[str], header: str = "Pick a file"):
     import os
     from pathlib import Path
 
     print_header(12, header)
 
-    root_path = Path(path)
     media_files: list[str] = []
 
-    for filename in os.listdir(root_path):
+    for filename in os.listdir(INPUTS_DIR):
         filepath = Path(filename)
 
         if filepath.suffix not in extensions:
@@ -21,19 +25,34 @@ def pick_file(path: str, extensions: list[str], header: str = "Pick a file"):
 
     if len(media_files) == 0:
         print("No files found")
-        exit(1)
+        print("Please place all your input files in the input_media folder")
+        sys.exit(1)
 
-    choice = int(input("Pick a file: "))
+    try:
+        choice = int(input("Pick a file: "))
 
-    return root_path / media_files[choice - 1]
+        return INPUTS_DIR / media_files[choice - 1]
+    except KeyboardInterrupt:
+        print()
+        print("Exiting...")
+        sys.exit(1)
+
 
 def ask_for_string(prompt: str, default: str = "") -> str:
-    answer = input(f"{prompt}: " if default == "" else f"{prompt} {dim_text(f"[{default}]")}: ")
+    try:
+        answer = input(
+            f"{prompt}: " if default == "" else f"{prompt} {dim_text(f'[{default}]')}: "
+        )
+    except KeyboardInterrupt:
+        print()
+        print("Exiting...")
+        sys.exit(1)
 
     if answer == "":
         answer = default
 
     return answer
+
 
 def ask_for_boolean(prompt: str, default: bool = False) -> bool:
     optional_text = dim_text("Y/n" if default else "y/N")
@@ -49,6 +68,7 @@ def ask_for_boolean(prompt: str, default: bool = False) -> bool:
             return False
         else:
             print("Invalid answer")
+
 
 def ask_for_int(prompt: str, default: int | None = None) -> int:
     optional_text = "" if default is None else dim_text(f" [{default}]")
@@ -75,7 +95,8 @@ def ask_for_int(prompt: str, default: int | None = None) -> int:
             print("Invalid answer")
             continue
 
-def clear_folder(path: str, header: str = "Clearing folder"):
+
+def clear_folder(path: Path, header: str = "Clearing folder"):
     import os
     from shutil import rmtree
 

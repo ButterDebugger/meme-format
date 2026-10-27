@@ -1,0 +1,21 @@
+[project]
+name = "meme-format"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ButterDebugger", email = "34288129+ButterDebugger@users.noreply.github.com" },
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+crossfade = "meme_format.crossfade:main"
+extract_clip = "meme_format.extract_clip:main"
+left_right = "meme_format.left_right:main"
+optimize = "meme_format.optimize:main"
+video_to_gif = "meme_format.video_to_gif:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
